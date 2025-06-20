@@ -26,8 +26,7 @@ public class User {
     protected User(){};
 
     //declare construtor for beans
-    public User(Long id, String email, String passHash){
-        this.id = id;
+    public User(String email, String passHash){
         this.email = email;
         this.passHash = passHash;
     }

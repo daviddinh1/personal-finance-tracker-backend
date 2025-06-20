@@ -5,6 +5,14 @@ public class AuthResponse {
     private String email;
     private Long userId;
 
+    public AuthResponse() {}
+
+    public AuthResponse(String token, Long userId, String email) {
+        this.token = token;
+        this.userId = userId;
+        this.email = email;
+    }
+
     // getters + setters
     public String getToken() { return token; }
     public void setToken(String token) { this.token = token; }
