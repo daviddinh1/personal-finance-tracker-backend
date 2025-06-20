@@ -1,0 +1,13 @@
+package org.dtd6003.personalfinancetrackerbackend;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class PersonalFinanceTrackerBackendApplication {
+
+    public static void main(String[] args) {
+        SpringApplication.run(PersonalFinanceTrackerBackendApplication.class, args);
+    }
+
+}
