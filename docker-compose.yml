@@ -1,0 +1,11 @@
+services:
+  db:
+    image: postgres:15
+    container_name: financetracker-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: "daviddinh6003"
+      POSTGRES_PASSWORD: "CHANGEINPROD!"
+      POSTGRES_DB: "financetracker"
+    ports:
+      - "5432:5432"
