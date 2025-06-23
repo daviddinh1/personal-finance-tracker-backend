@@ -1,8 +1,11 @@
 package org.dtd6003.personalfinancetrackerbackend.auth.service;
 
+import org.dtd6003.personalfinancetrackerbackend.auth.dto.LoginRequest;
 import org.dtd6003.personalfinancetrackerbackend.auth.dto.RegisterRequest;
 import org.dtd6003.personalfinancetrackerbackend.auth.model.User;
 import org.dtd6003.personalfinancetrackerbackend.auth.repo.UserRepository;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.dtd6003.personalfinancetrackerbackend.auth.security.JwtTokenProvider;
 import org.springframework.stereotype.Service;
@@ -25,10 +28,7 @@ public class AuthService {
 
     @Transactional
     public AuthResponse createUser(RegisterRequest req){
-        //first check if email is unique if now throw exception
-        if (repo.findByEmail(req.getEmail())) {
-            System.out.println("Not unique email");
-        }
+        //first check if email is unique if not throw exception
 
         //create password hashing strategy and then add it to db by using setter
         String userPassword = req.getPassHash();
@@ -43,5 +43,25 @@ public class AuthService {
 
         return new AuthResponse(token, saved.getId(), saved.getEmail()); //gives controller data
     }
+
+    @Transactional(readOnly = true)
+    public AuthResponse login(LoginRequest req) {
+        // 1) Load user
+        User user = repo.findByEmail(req.getEmail())
+                .orElseThrow(() ->
+                        new UsernameNotFoundException("No user with email " + req.getEmail()));
+
+        // 2) Verify password
+        if (!passwordEncoder.matches(req.getPassHash(), user.getPassHash())) {
+            throw new BadCredentialsException("Invalid email or password");
+        }
+
+        // 3) Issue token
+        String token = jwtTokenProvider.generateToken(user.getId(), user.getEmail());
+
+        // 4) Return DTO
+        return new AuthResponse(token, user.getId(), user.getEmail());
+    }
+
 
 }
