@@ -4,6 +4,7 @@ import org.dtd6003.personalfinancetrackerbackend.auth.dto.LoginRequest;
 import org.dtd6003.personalfinancetrackerbackend.auth.dto.RegisterRequest;
 import org.dtd6003.personalfinancetrackerbackend.auth.model.User;
 import org.dtd6003.personalfinancetrackerbackend.auth.repo.UserRepository;
+import org.dtd6003.personalfinancetrackerbackend.auth.security.EmailAlreadyExistException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -29,9 +30,12 @@ public class AuthService {
     @Transactional
     public AuthResponse createUser(RegisterRequest req){
         //first check if email is unique if not throw exception
+        if (repo.findByEmail(req.getEmail()).isPresent()) {
+            throw new EmailAlreadyExistException("Email already in use: " + req.getEmail());
+        }
 
         //create password hashing strategy and then add it to db by using setter
-        String userPassword = req.getPassHash();
+        String userPassword = req.getPassword();
         String encodedPassHash = passwordEncoder.encode(userPassword);
 
         User newUser = new User(req.getEmail(),encodedPassHash);
@@ -52,7 +56,7 @@ public class AuthService {
                         new UsernameNotFoundException("No user with email " + req.getEmail()));
 
         // 2) Verify password
-        if (!passwordEncoder.matches(req.getPassHash(), user.getPassHash())) {
+        if (!passwordEncoder.matches(req.getPassword(), user.getPassHash())) {
             throw new BadCredentialsException("Invalid email or password");
         }
 

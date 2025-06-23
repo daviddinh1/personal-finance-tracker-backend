@@ -9,13 +9,13 @@ public class LoginRequest {
     private String email;
 
     @NotBlank
-    private String passHash;
+    private String password;
 
     public LoginRequest(){};
 
-    public LoginRequest(String email, String passHash){
+    public LoginRequest(String email, String password){
         this.email = email;
-        this.passHash = passHash;
+        this.password = password;
     }
 
     //set getters n setters
@@ -23,15 +23,15 @@ public class LoginRequest {
         return this.email;
     }
 
-    public String getPassHash(){
-        return this.passHash;
+    public String getPassword(){
+        return this.password;
     }
 
     public void setEmail(String email){
         this.email = email;
     }
 
-    public void setPassHash(String passHash){
-        this.passHash = passHash;
+    public void setPassword(String password){
+        this.password = password;
     }
 }

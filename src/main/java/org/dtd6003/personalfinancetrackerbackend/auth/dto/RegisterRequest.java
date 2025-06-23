@@ -11,13 +11,13 @@ public class RegisterRequest {
 
     @NotBlank
     @Size(min=8)
-    private String passHash;
+    private String password;
 
     public RegisterRequest(){};
 
     public RegisterRequest(String email, String passHash){
         this.email = email;
-        this.passHash = passHash;
+        this.password = passHash;
     }
 
     //create getters for the DTO
@@ -25,8 +25,8 @@ public class RegisterRequest {
         return this.email;
     }
 
-    public String getPassHash(){
-        return this.passHash;
+    public String getPassword(){
+        return this.password;
     }
 
     //create setters for the DTO
@@ -35,7 +35,7 @@ public class RegisterRequest {
     }
 
     public void setPassHash(String passHash){
-        this.passHash = passHash;
+        this.password = password;
     }
 
 }
