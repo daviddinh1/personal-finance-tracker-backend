@@ -28,10 +28,12 @@ public class TransactionService {
         //get userId to add into transaction table
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Long userId = (Long) auth.getPrincipal();
-        if(req.getType() != "INCOME" && req.getType() != "EXPENSE"){
+        String type = req.getType();
+
+
+        if (type == null || ( ! type.equals("INCOME") && ! type.equals("EXPENSE") )) {
             throw new IllegalArgumentException("Type must be INCOME or EXPENSE");
         }
-
         //now we want to save this response to our entity
 
         //get table with associated FK using token
@@ -40,7 +42,6 @@ public class TransactionService {
                 .orElseThrow(() ->
                         new ResourceNotFound("User not found with id " + userId)
                 );
-        System.out.println("transaction error is occurring here");
         Transaction newTransaction = new Transaction(user,req.getType(),req.getDescription(),req.getAmount());
         Transaction save = repo.save(newTransaction);
 
