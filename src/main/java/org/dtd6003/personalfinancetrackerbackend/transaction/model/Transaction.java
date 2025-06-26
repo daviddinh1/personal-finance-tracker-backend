@@ -6,7 +6,6 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.Optional;
 
 @Entity
 @Table(name="transactions")
@@ -22,7 +21,7 @@ public class Transaction {
 
     @Enumerated(EnumType.STRING)
     @Column(name="type", nullable=false)
-    private TxnType type;
+    private String type;
 
     @Column(name="description")
     private String description;
@@ -36,7 +35,7 @@ public class Transaction {
 
     protected Transaction(){}
 
-    public Transaction(User user,TxnType type, String description, BigDecimal amount){
+    public Transaction(User user,String type, String description, BigDecimal amount){
         this.user = user;
         this.type = type;
         this.description = description;
@@ -53,7 +52,7 @@ public class Transaction {
         return this.user;
     }
 
-    public TxnType getType(){
+    public String getType(){
         return this.type;
     }
 
@@ -73,7 +72,7 @@ public class Transaction {
         this.user = user;
     }
 
-    public void setType(TxnType type){
+    public void setType(String type){
         this.type = type;
     }
 

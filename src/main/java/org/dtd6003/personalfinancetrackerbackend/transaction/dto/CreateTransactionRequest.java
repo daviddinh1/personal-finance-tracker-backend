@@ -1,5 +1,6 @@
 package org.dtd6003.personalfinancetrackerbackend.transaction.dto;
 
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import org.dtd6003.personalfinancetrackerbackend.transaction.model.TxnType;
@@ -7,8 +8,8 @@ import org.dtd6003.personalfinancetrackerbackend.transaction.model.TxnType;
 import java.math.BigDecimal;
 
 public class CreateTransactionRequest {
-    @NotNull
-    private TxnType type;
+    @NotBlank
+    private String type;
 
     @NotNull
     @Positive
@@ -18,17 +19,17 @@ public class CreateTransactionRequest {
 
     public CreateTransactionRequest(){}
 
-    public CreateTransactionRequest(TxnType type, BigDecimal amount, String description){
+    public CreateTransactionRequest(String type, BigDecimal amount, String description){
         this.type = type;
         this.amount = amount;
         this.description = description;
     }
 
     //set dto setters and getters
-    public TxnType getType(){
+    public String getType(){
         return this.type;
     }
-    public void setType(TxnType type){
+    public void setType(String type){
         this.type = type;
     }
 

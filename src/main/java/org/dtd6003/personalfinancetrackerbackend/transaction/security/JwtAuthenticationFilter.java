@@ -25,10 +25,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         if(header != null && header.startsWith("Bearer ")){
             String token = header.substring(7);
+            logger.debug("this is the header " + header);
 
             try{
                 if(jwtTokenProvider.validateToken(token)){
                     Long userId = jwtTokenProvider.getUserIdFromJWT(token);
+                    logger.debug("Authenticated userId: {}" + userId);
 
                     //build auth object to store in security context
                     UsernamePasswordAuthenticationToken auth =
@@ -38,8 +40,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                                     Collections.emptyList()
                             );
                     SecurityContextHolder.getContext().setAuthentication(auth);
+                }else{
+                    logger.debug("Validating the token has failed");
                 }
             } catch(Exception ex){
+                logger.debug("No bearer token");
+
                 SecurityContextHolder.clearContext();
             }
         }

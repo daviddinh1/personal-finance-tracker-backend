@@ -8,13 +8,13 @@ import java.time.LocalDateTime;
 public class TransactionResponse {
     private Long id;
     private Long userId;
-    private TxnType type;
+    private String type;
     private BigDecimal amount;
     private String description;
     private LocalDateTime createdAt;
 
     public TransactionResponse(){}
-    public TransactionResponse(Long id, Long userId, TxnType type, BigDecimal amount, String description, LocalDateTime createdAt){
+    public TransactionResponse(Long id, Long userId, String type, BigDecimal amount, String description, LocalDateTime createdAt){
         this.id = id;
         this.userId = userId;
         this.type = type;
@@ -39,11 +39,11 @@ public class TransactionResponse {
         this.userId = userId;
     }
 
-    public TxnType getType() {
+    public String getType() {
         return type;
     }
 
-    public void setType(TxnType type) {
+    public void setType(String type) {
         this.type = type;
     }
 

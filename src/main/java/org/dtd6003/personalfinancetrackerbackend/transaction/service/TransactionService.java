@@ -28,8 +28,7 @@ public class TransactionService {
         //get userId to add into transaction table
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Long userId = (Long) auth.getPrincipal();
-
-        if(req.getType() != TxnType.INCOME && req.getType() != TxnType.EXPENSE){
+        if(req.getType() != "INCOME" && req.getType() != "EXPENSE"){
             throw new IllegalArgumentException("Type must be INCOME or EXPENSE");
         }
 
@@ -41,6 +40,7 @@ public class TransactionService {
                 .orElseThrow(() ->
                         new ResourceNotFound("User not found with id " + userId)
                 );
+        System.out.println("transaction error is occurring here");
         Transaction newTransaction = new Transaction(user,req.getType(),req.getDescription(),req.getAmount());
         Transaction save = repo.save(newTransaction);
 

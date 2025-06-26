@@ -1,4 +1,6 @@
-DROP TABLE IF EXISTS users;
+DROP TABLE IF EXISTS transactions CASCADE;
+DROP TABLE IF EXISTS users CASCADE;
+DROP TYPE IF EXISTS txn_type CASCADE;
 
 CREATE TABLE users(
     id SERIAL PRIMARY KEY,
@@ -7,13 +9,11 @@ CREATE TABLE users(
     created_at TIMESTAMP DEFAULT NOW()
 );
 
-CREATE TYPE txn_type AS ENUM('INCOME','EXPENSE');
-
 CREATE TABLE transactions(
     id SERIAL PRIMARY KEY,
     user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
-    type txn_type NOT NULL,
+    type VARCHAR(500) NOT NULL,
     amount DECIMAL(12,2) NOT NULL,
     description TEXT,
-    created_at TIMESTAMP DEFAULT NOW(),
+    created_at TIMESTAMP DEFAULT NOW()
 );
