@@ -6,6 +6,7 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 @Entity
 @Table(name="transactions")
@@ -42,8 +43,9 @@ public class Transaction {
         this.amount = amount;
     }
 
+
     //set getters and setters
-    public long getId(){
+    public Long getId(){
         return this.id;
     }
 
