@@ -7,11 +7,14 @@ import org.dtd6003.personalfinancetrackerbackend.transaction.dto.CreateTransacti
 import org.dtd6003.personalfinancetrackerbackend.transaction.dto.TransactionResponse;
 import org.dtd6003.personalfinancetrackerbackend.transaction.exceptions.ResourceNotFound;
 import org.dtd6003.personalfinancetrackerbackend.transaction.model.Transaction;
-import org.dtd6003.personalfinancetrackerbackend.transaction.model.TxnType;
 import org.dtd6003.personalfinancetrackerbackend.transaction.repo.TransactionRepository;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
 
 @Service
 public class TransactionService {
@@ -46,6 +49,26 @@ public class TransactionService {
         Transaction save = repo.save(newTransaction);
 
         return new TransactionResponse(save.getId(),userId,save.getType(),save.getAmount(),save.getDescription(),save.getCreatedAt());
+    }
+
+    @Transactional
+    public List<TransactionResponse> getAllTransactions() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Long userId = (Long) auth.getPrincipal();
+
+        List<Transaction> transactions = repo.findByUserId(userId);
+
+        return transactions.stream()
+                .map(tx -> new TransactionResponse(
+                        tx.getId(),
+                        /* if your Transaction entity has a user relationship: */
+                        tx.getUser().getId(),
+                        tx.getType(),
+                        tx.getAmount(),
+                        tx.getDescription(),
+                        tx.getCreatedAt()
+                ))
+                .collect(Collectors.toList());
     }
 
 }
